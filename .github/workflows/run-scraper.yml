@@ -1,0 +1,23 @@
+name: Scraper LBC
+
+on:
+  workflow_dispatch:  # tu pourras le déclencher manuellement
+
+jobs:
+  run-scraper:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Cloner le repo
+        uses: actions/checkout@v3
+
+      - name: 🐍 Configurer Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+
+      - name: 📦 Installer les dépendances
+        run: pip install -r requirements.txt
+
+      - name: 🚀 Lancer le scraper
+        run: python scraper_lbc_api.py
