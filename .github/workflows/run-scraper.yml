@@ -1,29 +1,33 @@
-name: run-scraper
+name: Run LBC Scraper
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 7 * * *"  # Tous les jours à 7h
+    - cron: "0 7 * * *"  # tous les jours à 7h
 
 jobs:
-  run:
+  run-scraper:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: 📥 Cloner le dépôt
-        uses: actions/checkout@v3
+    env:
+      PYTHONUNBUFFERED: 1
 
-      - name: 🐍 Installer Python 3.10
-        uses: actions/setup-python@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
-      - name: 📦 Installer les dépendances
+      - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser xvfb
+          pip install --upgrade pip
           pip install -r requirements.txt
-          playwright install --with-deps
 
-      - name: 🚀 Lancer le scraper
-        run: python scraper_lbc_html.py
-
+      - name: Run scraper with xvfb (undetected_chromedriver)
+        run: |
+          xvfb-run python scraper_lbc_stealth.py
