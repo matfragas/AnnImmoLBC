@@ -17,7 +17,8 @@ URL = (
 async def main():
     print("🚀 Lancement du scraper LeBonCoin via Playwright")
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=False)  # ← headless=False pour éviter le blocage
+        # browser = await p.chromium.launch(headless=False)  # ← headless=False pour éviter le blocage
+        browser = await p.chromium.launch(headless=True)
         context = await browser.new_context()
         page = await context.new_page()
 
